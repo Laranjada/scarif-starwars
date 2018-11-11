@@ -1,0 +1,27 @@
+version: 0.0.1
+
+# Change default server ports
+server:
+    applicationConnectors:
+        - type: http
+          port: 9000
+    adminConnectors:
+        - type: http
+          port: 9001
+
+logging:
+    level: INFO
+    loggers:
+        com.starwars: DEBUG
+        io.dropwizard.jersey.jackson: INFO
+
+swagger:
+    resourcePackage: com.starwars.resource
+
+repository:
+    host: localhost
+    port: 27017
+    user: user
+    passwd: mypass
+    db: starwars
+    collectionName: planetas
