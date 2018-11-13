@@ -86,8 +86,7 @@ public class PlanetaRepository {
             planeta.set_id(null);
             Bson updateOperationDocument = new Document("$set", parse(planeta));
 
-            db.getCollection(PLANETAS).updateOne(filter, updateOperationDocument);
-            return true;
+            return 0 < db.getCollection(PLANETAS).updateOne(filter, updateOperationDocument).getModifiedCount();
         } catch (Exception e) {
             log.error("Falha ao salvar objeto: " + e.getMessage());
             return false;
