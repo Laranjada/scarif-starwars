@@ -1,9 +1,8 @@
 package com.starwars.application;
 
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
-import com.google.inject.Guice;
-import com.google.inject.Injector;
 import com.starwars.application.binder.StarWarsBinder;
+import com.starwars.application.managed.EhCacheManaged;
 import com.starwars.application.managed.MongoConnectionManaged;
 import com.starwars.resource.PlanetaResource;
 import io.dropwizard.Application;
@@ -17,8 +16,6 @@ import org.slf4j.LoggerFactory;
 public class ScarifApplication extends Application<ScarifConfig> {
 
     private static final Logger log = LoggerFactory.getLogger(ScarifApplication.class);
-
-    private Injector serviceLocator;
 
     public static void main(String[] args) throws Exception {
         new ScarifApplication().run(args);
@@ -45,14 +42,18 @@ public class ScarifApplication extends Application<ScarifConfig> {
         MongoConnectionManaged mongoManaged = new MongoConnectionManaged(config.repositoryConfig);
         env.lifecycle().manage(mongoManaged);
 
+        log.info("Init cache manager...");
+        EhCacheManaged cacheManaged = new EhCacheManaged();
+        env.lifecycle().manage(cacheManaged);
+
         log.info("Service locator init");
-        serviceLocator = Guice.createInjector(new StarWarsBinder(mongoManaged.getDb(), mongoManaged.getCollection()));
+        env.jersey().register(new StarWarsBinder(mongoManaged.getDb(), mongoManaged.getCollection()));
 
         log.info("HealthCheck init");
         env.healthChecks().register("template",
-                new ScarifHealthCheck(config.getVersion()));
+                new ScarifHealthCheck(config.getVersion(), mongoManaged.getDb()));
 
-        env.jersey().register(serviceLocator.getInstance(PlanetaResource.class));
+        env.jersey().register(PlanetaResource.class);
 
     }
 }

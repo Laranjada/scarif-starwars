@@ -1,21 +1,26 @@
 package com.starwars.application;
 
-import com.starwars.application.binder.BindingObject;
-import com.starwars.domain.repository.CollectionPlanetaRepository;
 import com.codahale.metrics.health.HealthCheck;
-
-import javax.inject.Inject;
+import com.mongodb.client.MongoDatabase;
 
 public class ScarifHealthCheck extends HealthCheck {
-    private final String version;
 
-    public ScarifHealthCheck(String version) {
+    private final String version;
+    private MongoDatabase db;
+
+    public ScarifHealthCheck(String version, MongoDatabase db) {
         this.version = version;
+        this.db = db;
     }
 
         @Override
     protected Result check() throws Exception {
 
-        return Result.healthy("OK with version: " + this.version);
-    }
+            try {
+                long count = db.getCollection("planetas").countDocuments();
+                return Result.healthy("StarWars Scarif version: " + this.version + " planet documents count=" + count);
+            } catch (Exception e) {
+                return Result.unhealthy("StarWars Scarif version: " + " mongodb out");
+            }
+        }
 }

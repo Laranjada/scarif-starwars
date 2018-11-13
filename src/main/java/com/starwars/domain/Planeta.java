@@ -1,12 +1,14 @@
-package com.starwars.domain.persistente;
+package com.starwars.domain;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class Planeta {
 
-    private String nome;
-    private String clima;
-    private String terreno;
+    protected String _id;
+    protected String nome;
+    protected String clima;
+    protected String terreno;
+    protected Integer qtdAparicoesEmFilmes;
 
     @JsonProperty
     public String getNome() {
@@ -35,10 +37,29 @@ public class Planeta {
         this.terreno = terreno;
     }
 
+    @JsonProperty
+    public String get_id() {
+        return _id;
+    }
+
+    public void set_id(String _id) {
+        this._id = _id;
+    }
+
+    @JsonProperty
+    public Integer getQtdAparicoesEmFilmes() {
+        return qtdAparicoesEmFilmes;
+    }
+
+    public void setQtdAparicoesEmFilmes(Integer qtdAparicoesEmFilmes) {
+        this.qtdAparicoesEmFilmes = qtdAparicoesEmFilmes;
+    }
+
     public Planeta() {
     }
 
-    public Planeta(String nome, String clima, String terreno) {
+    public Planeta(String _id, String nome, String clima, String terreno) {
+        this._id = _id;
         this.nome = nome;
         this.clima = clima;
         this.terreno = terreno;

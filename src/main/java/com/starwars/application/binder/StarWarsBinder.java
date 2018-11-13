@@ -1,16 +1,16 @@
 package com.starwars.application.binder;
 
-import com.google.inject.AbstractModule;
-import com.google.inject.Provides;
+
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import org.bson.Document;
+import org.glassfish.hk2.utilities.binding.AbstractBinder;
 import org.reflections.Reflections;
 
 import javax.inject.Singleton;
 import java.util.Set;
 
-public class StarWarsBinder extends AbstractModule{
+public class StarWarsBinder extends AbstractBinder{
 
     private MongoDatabase db;
     private MongoCollection<Document> collection;
@@ -25,17 +25,21 @@ public class StarWarsBinder extends AbstractModule{
     protected void configure() {
 
         //binding classes
-        getServiceClasses().stream().forEach(o-> bind(o));
-        getSingletonServiceClasses().stream().forEach(o-> bind(o).in(Singleton.class));
+        getServiceClasses().stream().forEach(o-> bind(o).to(o));
+        getSingletonServiceClasses().stream().forEach(o-> bind(o).to(o).in(Singleton.class));
+
+        //binding MongoDatabase instance
+        bind(this.db).to(MongoDatabase.class);
+
+        //binding collection instance
+        bind(this.collection);
 
     }
 
-    @Provides
     MongoDatabase provideMongoDatabase() {
         return this.db;
     }
 
-    @Provides
     MongoCollection<Document> provideMongoCollection() {
         return this.collection;
     }

@@ -1,1 +1,1 @@
-docker run -d -p 27017:27017 -e MONGODB_USER="user" -e MONGODB_PASS="mypass" -e MONGODB_DATABASE="starwars"  -v c:\mongodb-dados:/data/db mongo:latest
+docker run -d -p 27017:27017 -e MONGO_INITDB_ROOT_USERNAME="user" -e MONGO_INITDB_ROOT_PASSWORD="mypass"  mongo:latest

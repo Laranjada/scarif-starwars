@@ -12,12 +12,14 @@ public class MongoConnectionManaged implements Managed {
     private MongoDatabase db;
     private MongoCollection<Document> collection;
 
+    private static final String ADMIN_DB_NAME = "admin";
+
     public MongoConnectionManaged(RepositoryConfig mongoConfig) {
 
         ServerAddress address = new ServerAddress(mongoConfig.getHost(), mongoConfig.getPort());
 
         MongoCredential credential = MongoCredential
-                .createCredential(mongoConfig.getUser(), mongoConfig.getDb(), mongoConfig.getPasswd().toCharArray());
+                .createCredential(mongoConfig.getUser(), ADMIN_DB_NAME, mongoConfig.getPasswd().toCharArray());
 
         MongoClient mongoClient = new MongoClient(address, credential, MongoClientOptions.builder().build());
 
