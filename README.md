@@ -1,9 +1,9 @@
 # scarif-starwars
-Projeto desafio b2w: Micro-serviço, Dropwizard, hk2, testcontainer, swagger, mongodb.
+Challenge project made for the b2w selection process: Micro-service, Dropwizard, hk2, testcontainer, swagger, mongodb.
 
-**<h3>Para execução do applicativo localmente</h3>**
-- Executar o script para start do container MongoDB
-- Caso não vá ser usado docker editar as propriedes de conexão com banco no config.yml
+**<h3>For running the application locally</h3>**
+- Run the MongoDB container start script
+- If docker is not going to be used, edit bank connection properties in config.yml
     - repository:
         - host: localhost
         - port: 27017
@@ -12,5 +12,5 @@ Projeto desafio b2w: Micro-serviço, Dropwizard, hk2, testcontainer, swagger, mo
         - db: starwars
         - collectionName: planetas
 
-**<h3>Para execução dos testes unitarios</h3>**
->Obrigatório intalação do Docker
+**<h3>For the execution of unit tests</h3>**
+>Mandatory Docker installation
